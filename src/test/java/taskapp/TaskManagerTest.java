@@ -137,14 +137,17 @@ class TaskManagerTest {
         TaskManager manager = new TaskManager();
 
         Task task = new Task(1, "学习测试");
+        task.complete();
         manager.addTask(task);
 
         boolean renamed = manager.renameTask(1, "学习SQL");
+        Task stored = manager.findById(1);
 
         assertTrue(renamed);
-        assertEquals("学习SQL", manager.findById(1).getTitle());
-        assertNotNull(manager.findById(1));
-        assertFalse(manager.findById(1).isCompleted());
+        assertNotNull(stored);
+        assertEquals(1, stored.getId());
+        assertEquals("学习SQL", stored.getTitle());
+        assertTrue(stored.isCompleted());
         assertEquals(1, manager.getTasks().size());
 
     }
@@ -157,11 +160,12 @@ class TaskManagerTest {
         manager.addTask(task);
 
         boolean renamed = manager.renameTask(99, "学习SQL");
+        Task stored = manager.findById(1);
 
         assertFalse(renamed);
-        assertEquals("学习测试", manager.findById(1).getTitle());
-        assertNotNull(manager.findById(1));
-        assertFalse(manager.findById(1).isCompleted());
+        assertNotNull(stored);
+        assertEquals("学习测试", stored.getTitle());
+        assertFalse(stored.isCompleted());
         assertEquals(1, manager.getTasks().size());
     }
 
@@ -173,11 +177,12 @@ class TaskManagerTest {
         manager.addTask(task);
 
         boolean renamed = manager.renameTask(1, null);
+        Task stored = manager.findById(1);
 
         assertFalse(renamed);
-        assertEquals("学习测试", manager.findById(1).getTitle());
-        assertNotNull(manager.findById(1));
-        assertFalse(manager.findById(1).isCompleted());
+        assertNotNull(stored);
+        assertEquals("学习测试", stored.getTitle());
+        assertFalse(stored.isCompleted());
         assertEquals(1, manager.getTasks().size());
     }
 
@@ -189,11 +194,12 @@ class TaskManagerTest {
         manager.addTask(task);
 
         boolean renamed = manager.renameTask(1, "");
+        Task stored = manager.findById(1);
 
         assertFalse(renamed);
-        assertEquals("学习测试", manager.findById(1).getTitle());
-        assertNotNull(manager.findById(1));
-        assertFalse(manager.findById(1).isCompleted());
+        assertNotNull(stored);
+        assertEquals("学习测试", stored.getTitle());
+        assertFalse(stored.isCompleted());
         assertEquals(1, manager.getTasks().size());
     }
 
@@ -205,11 +211,12 @@ class TaskManagerTest {
         manager.addTask(task);
 
         boolean renamed = manager.renameTask(1, " ");
+        Task stored = manager.findById(1);
 
         assertFalse(renamed);
-        assertEquals("学习测试", manager.findById(1).getTitle());
-        assertNotNull(manager.findById(1));
-        assertFalse(manager.findById(1).isCompleted());
+        assertNotNull(stored);
+        assertEquals("学习测试", stored.getTitle());
+        assertFalse(stored.isCompleted());
         assertEquals(1, manager.getTasks().size());
     }
 }
