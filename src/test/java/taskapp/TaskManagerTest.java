@@ -132,4 +132,84 @@ class TaskManagerTest {
         assertEquals(0, manager.getTasks().size());
     }
 
+    @Test
+    void renameTaskShouldRenameExistingTask() {
+        TaskManager manager = new TaskManager();
+
+        Task task = new Task(1, "学习测试");
+        manager.addTask(task);
+
+        boolean renamed = manager.renameTask(1, "学习SQL");
+
+        assertTrue(renamed);
+        assertEquals("学习SQL", manager.findById(1).getTitle());
+        assertNotNull(manager.findById(1));
+        assertFalse(manager.findById(1).isCompleted());
+        assertEquals(1, manager.getTasks().size());
+
+    }
+
+    @Test
+    void renameTaskShouldReturnFalseWhenIdIsMissing() {
+        TaskManager manager = new TaskManager();
+
+        Task task = new Task(1, "学习测试");
+        manager.addTask(task);
+
+        boolean renamed = manager.renameTask(99, "学习SQL");
+
+        assertFalse(renamed);
+        assertEquals("学习测试", manager.findById(1).getTitle());
+        assertNotNull(manager.findById(1));
+        assertFalse(manager.findById(1).isCompleted());
+        assertEquals(1, manager.getTasks().size());
+    }
+
+    @Test
+    void renameTaskShouldRejectNull() {
+        TaskManager manager = new TaskManager();
+
+        Task task = new Task(1, "学习测试");
+        manager.addTask(task);
+
+        boolean renamed = manager.renameTask(1, null);
+
+        assertFalse(renamed);
+        assertEquals("学习测试", manager.findById(1).getTitle());
+        assertNotNull(manager.findById(1));
+        assertFalse(manager.findById(1).isCompleted());
+        assertEquals(1, manager.getTasks().size());
+    }
+
+    @Test
+    void renameTaskShouldRejectBlank() {
+        TaskManager manager = new TaskManager();
+
+        Task task = new Task(1, "学习测试");
+        manager.addTask(task);
+
+        boolean renamed = manager.renameTask(1, "");
+
+        assertFalse(renamed);
+        assertEquals("学习测试", manager.findById(1).getTitle());
+        assertNotNull(manager.findById(1));
+        assertFalse(manager.findById(1).isCompleted());
+        assertEquals(1, manager.getTasks().size());
+    }
+
+    @Test
+    void renameTaskShouldRejectSpace() {
+        TaskManager manager = new TaskManager();
+
+        Task task = new Task(1, "学习测试");
+        manager.addTask(task);
+
+        boolean renamed = manager.renameTask(1, " ");
+
+        assertFalse(renamed);
+        assertEquals("学习测试", manager.findById(1).getTitle());
+        assertNotNull(manager.findById(1));
+        assertFalse(manager.findById(1).isCompleted());
+        assertEquals(1, manager.getTasks().size());
+    }
 }
