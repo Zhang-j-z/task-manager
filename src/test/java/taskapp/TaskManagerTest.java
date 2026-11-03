@@ -170,7 +170,7 @@ class TaskManagerTest {
     }
 
     @Test
-    void renameTaskShouldRejectNull() {
+    void renameTaskShouldRejectNullTitle() {
         TaskManager manager = new TaskManager();
 
         Task task = new Task(1, "学习测试");
@@ -187,7 +187,7 @@ class TaskManagerTest {
     }
 
     @Test
-    void renameTaskShouldRejectBlank() {
+    void renameTaskShouldRejectEmptyTitle() {
         TaskManager manager = new TaskManager();
 
         Task task = new Task(1, "学习测试");
@@ -204,7 +204,7 @@ class TaskManagerTest {
     }
 
     @Test
-    void renameTaskShouldRejectSpace() {
+    void renameTaskShouldRejectBlankTitle() {
         TaskManager manager = new TaskManager();
 
         Task task = new Task(1, "学习测试");
