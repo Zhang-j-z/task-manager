@@ -88,7 +88,7 @@ class TaskManagerTest {
     }
 
     @Test
-    void deleteTaskShouldMarkExistingTaskAsDeleted() {//删除已有任务
+    void deleteTaskShouldRemoveExistingTask() {//删除已有任务
         TaskManager manager = new TaskManager();
 
         Task task = new Task(1, "学习测试");
@@ -102,11 +102,12 @@ class TaskManagerTest {
         assertTrue(deleted);
         assertNull(manager.findById(1));
         assertEquals(1, manager.getTasks().size());
+        assertNotNull(manager.findById(2));
         assertEquals("学习 SQL", manager.findById(2).getTitle());
     }
 
     @Test
-    void deleteTaskShouldRejectNull() {//删除不存在的任务
+    void deleteTaskShouldReturnFalseWhenIdIsMissing() {//删除不存在的任务
         TaskManager manager = new TaskManager();
 
         Task task = new Task(1, "学习测试");
@@ -119,7 +120,7 @@ class TaskManagerTest {
     }
 
     @Test
-    void deleteTaskShouldRejectDuplicateId() {//重复删除
+    void deleteTaskShouldReturnFalseWhenAlreadyDeleted() {//重复删除
         TaskManager manager = new TaskManager();
 
         Task task = new Task(1, "学习测试");
