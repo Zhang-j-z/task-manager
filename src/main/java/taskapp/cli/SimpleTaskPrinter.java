@@ -1,4 +1,4 @@
-package taskapp;
+package taskapp.cli;
 
 import taskapp.model.Task;
 

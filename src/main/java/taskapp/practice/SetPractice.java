@@ -1,4 +1,6 @@
-package taskapp.model;
+package taskapp.practice;
+
+import taskapp.model.Task;
 
 import java.util.Set;
 import java.util.HashSet;

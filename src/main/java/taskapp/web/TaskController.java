@@ -1,4 +1,10 @@
-package taskapp;
+package taskapp.web;
+
+import taskapp.service.TaskService;
+import taskapp.web.error.InvalidTaskQueryException;
+import taskapp.web.request.CreateTaskRequest;
+import taskapp.web.request.RenameTaskRequest;
+import taskapp.web.request.UpdateCompletedRequest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

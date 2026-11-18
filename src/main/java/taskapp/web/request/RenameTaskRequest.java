@@ -1,4 +1,4 @@
-package taskapp;
+package taskapp.web.request;
 
 public class RenameTaskRequest {
     private String title;

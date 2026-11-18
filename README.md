@@ -20,6 +20,22 @@ CREATE TABLE IF NOT EXISTS tasks (
 2. 在 IntelliJ IDEA 中打开 Maven 项目。编辑 `taskapp.TaskManagerApplication` 的运行配置，将本地 MySQL 密码放在环境变量 `MYSQL_PASSWORD` 中。默认连接为 `127.0.0.1:3306/task_learning`，用户名为 `root`。使用其他地址或账户时，可设置 `SPRING_DATASOURCE_URL` 和 `SPRING_DATASOURCE_USERNAME`。
 3. 运行 `taskapp.TaskManagerApplication`，访问 `http://localhost:8080/tasks`。刚初始化的数据库会返回空数组。
 
+## 代码结构
+
+| 包 | 职责 |
+|---|---|
+| `taskapp` | Spring Boot 启动入口 `TaskManagerApplication` |
+| `taskapp.web` | HTTP 路由和响应 |
+| `taskapp.web.request` | 请求 JSON 对应的数据类 |
+| `taskapp.web.error` | 参数异常和错误响应 |
+| `taskapp.service` | 任务操作、数据库连接和事务范围 |
+| `taskapp.repository` | JDBC、SQL 和结果映射 |
+| `taskapp.model` | 任务对象 |
+| `taskapp.cli` | 命令行入口、任务管理、打印和文本文件存储 |
+| `taskapp.practice` | 文件、集合和 JDBC 练习 |
+
+`TaskService.completeBatch` 在一条连接上批量标记任务完成，全部成功时提交，找不到任务或更新出错时回滚。目前通过 Service 测试调用。
+
 ## HTTP 接口
 
 | 方法 | 路径 | 用途 | 请求 JSON 示例 |
@@ -50,4 +66,4 @@ curl "http://localhost:8080/tasks?completed=false&limit=10&offset=0"
 
 ## 命令行版本与测试
 
-在 IDEA 运行 `taskapp.Main` 可使用命令行版本。它在启动时读取 `tasks.txt`，退出时保存。运行 `mvn test` 或使用 IDEA 的 Maven 面板可执行 JUnit 测试，覆盖任务校验、命令行版业务逻辑和文件持久化。
+在 IDEA 运行 `taskapp.cli.Main` 可使用命令行版本。它在启动时读取 `tasks.txt`，退出时保存。运行 `mvn test` 或使用 IDEA 的 Maven 面板可执行 JUnit 测试，覆盖任务校验、命令行版业务逻辑、文件持久化和批量更新事务。事务测试使用独立的 H2 内存数据库。

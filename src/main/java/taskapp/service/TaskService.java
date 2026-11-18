@@ -1,4 +1,6 @@
-package taskapp;
+package taskapp.service;
+
+import taskapp.repository.TaskRepository;
 
 import org.springframework.stereotype.Service;
 import taskapp.model.Task;
@@ -84,4 +86,28 @@ public class TaskService {
         }
     }
 
+    public boolean completeBatch(List<Integer> ids) throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            connection.setAutoCommit(false);
+            TaskRepository repository = new TaskRepository(connection);
+
+            try {
+                for (int id : ids) {
+                    if (!repository.updateCompleted(id, true)) {
+                        connection.rollback();
+                        return false;
+                    }
+                }
+                connection.commit();
+                return true;
+            } catch (SQLException | RuntimeException failure) {
+                try {
+                    connection.rollback();
+                } catch (SQLException rollbackFailure) {
+                    failure.addSuppressed(rollbackFailure);
+                }
+                throw failure;
+            }
+        }
+    }
 }

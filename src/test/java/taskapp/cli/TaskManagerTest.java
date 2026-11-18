@@ -1,4 +1,4 @@
-package taskapp;
+package taskapp.cli;
 
 import org.junit.jupiter.api.Test;
 import taskapp.model.Task;

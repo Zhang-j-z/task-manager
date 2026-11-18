@@ -1,4 +1,6 @@
-package taskapp;
+package taskapp.practice;
+
+import taskapp.repository.TaskRepository;
 
 import taskapp.model.Task;
 

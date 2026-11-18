@@ -1,4 +1,4 @@
-package taskapp;
+package taskapp.web.request;
 
 public class UpdateCompletedRequest {
     private Boolean completed;

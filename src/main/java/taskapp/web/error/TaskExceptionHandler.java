@@ -1,4 +1,6 @@
-package taskapp;
+package taskapp.web.error;
+
+import taskapp.web.TaskController;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

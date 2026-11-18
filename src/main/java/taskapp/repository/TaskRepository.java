@@ -1,4 +1,4 @@
-package taskapp;
+package taskapp.repository;
 
 import taskapp.model.Task;
 

@@ -35,6 +35,12 @@
             <artifactId>spring-boot-starter-jdbc</artifactId>
             <version>4.1.2</version>
         </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>2.5.252</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -47,7 +53,7 @@
                     <archive>
                         <index>true</index>
                         <manifest>
-                            <mainClass>taskapp.Main</mainClass>
+                            <mainClass>taskapp.cli.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

@@ -1,4 +1,4 @@
-package taskapp;
+package taskapp.cli;
 
 import org.junit.jupiter.api.io.TempDir;
 import static org.junit.jupiter.api.Assertions.*;
