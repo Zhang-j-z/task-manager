@@ -1,7 +1,10 @@
 package taskapp.web;
 
+import taskapp.service.TaskBatchService;
 import taskapp.service.TaskService;
+import taskapp.service.TaskStatisticsService;
 import taskapp.web.error.InvalidTaskQueryException;
+import taskapp.web.error.TaskNotFoundException;
 import taskapp.web.request.CreateTaskRequest;
 import taskapp.web.request.RenameTaskRequest;
 import taskapp.web.request.UpdateCompletedRequest;
@@ -15,17 +18,26 @@ import java.net.URI;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
 public class TaskController {
+    private final TaskService taskService;
+    private final TaskStatisticsService taskStatisticsService ;
+    private final TaskBatchService taskBatchService;
+
+    public TaskController(TaskService taskService, TaskStatisticsService taskStatisticsService, TaskBatchService taskBatchService) {
+        this.taskService = taskService;
+        this.taskStatisticsService = taskStatisticsService;
+        this.taskBatchService = taskBatchService;
+    }
+
 
     @GetMapping("/tasks/demo")
     public Task demo() {
         return taskService.demo();
     }
-
-    private final TaskService taskService;
 
     @GetMapping("/tasks/{id}")
     public ResponseEntity<Task> findTaskById(
@@ -57,10 +69,6 @@ public class TaskController {
             return ResponseEntity.noContent().build();  // 204：修改成功
         }
         else return ResponseEntity.notFound().build();  // 404：任务不存在
-    }
-
-    public TaskController(TaskService taskService) {
-        this.taskService = taskService;
     }
 
     @GetMapping("/tasks")
@@ -141,5 +149,32 @@ public class TaskController {
         // true：204；false：404
         if (updated) return ResponseEntity.noContent().build();
         else return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/tasks/count")
+    public Map<String, Long> countTasks(
+            @RequestParam(name = "completed", required = false) Boolean completed) {
+        long count = taskStatisticsService.count(completed);
+        return Map.of("count", count);
+    }
+
+    @PatchMapping("/tasks/batch/completed")
+    public ResponseEntity<Void> completedBatch(@RequestBody List<Integer> ids) {
+        if (ids.isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        } else {
+            for (Integer id : ids) {
+                if (id == null || id < 1) {
+                    return ResponseEntity.badRequest().build();
+                }
+            }
+        }
+
+        try {
+            taskBatchService.completeBatch(ids);
+            return ResponseEntity.noContent().build();
+        } catch (TaskNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
